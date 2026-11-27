@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Daftar Bids')
@@ -36,16 +35,20 @@
                         <td>{{ $bid->is_winner ? 'Ya' : 'Tidak' }}</td>
                         <td>
                             <a href="{{ route('bids.show', $bid->id) }}">Detail</a>
-                            |
-                            <a href="{{ route('bids.edit', $bid->id) }}">Edit</a>
-                            <form action="{{ route('bids.destroy', $bid->id) }}"
-                                method="POST"
-                                style="display: inline;"
-                                onsubmit="return confirm('Yakin ingin menghapus penawaran ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Hapus</button>
-                            </form>
+
+                            @if (auth()->id() === $bid->developer_id)
+                                |
+                                <a href="{{ route('bids.edit', $bid->id) }}">Edit</a>
+
+                                <form action="{{ route('bids.destroy', $bid->id) }}"
+                                    method="POST"
+                                    style="display: inline;"
+                                    onsubmit="return confirm('Yakin ingin menghapus penawaran ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

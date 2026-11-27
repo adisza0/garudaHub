@@ -27,7 +27,6 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'client_id' => 'required|exists:users,id',
             'judul' => 'required|string|max:200',
             'deskripsi' => 'required|string',
             'kategori' => 'required|string|max:50',
@@ -37,7 +36,7 @@ class ProjectController extends Controller
             'status' => 'required|in:terbuka,ditutup',
         ]);
 
-        Project::create($validated);
+        $request->user()->projects()->create($validated);
 
         return redirect()
             ->route('projects.index')
@@ -52,15 +51,29 @@ class ProjectController extends Controller
         return view('projects.show', compact('project'));
     }
 
+    // Memeriksa kepemilikan project.
+    private function authorizeOwner(Project $project): void
+    {
+        abort_unless(
+            $project->client_id === auth()->id(),
+            403,
+            'Anda tidak memiliki hak untuk mengelola project ini.'
+        );
+    }
+
     // Menampilkan formulir edit project.
     public function edit(Project $project)
     {
+        $this->authorizeOwner($project);
+
         return view('projects.edit', compact('project'));
     }
 
     // Memperbarui project.
     public function update(Request $request, Project $project)
     {
+        $this->authorizeOwner($project);
+
         $validated = $request->validate([
             'judul' => 'required|string|max:200',
             'deskripsi' => 'required|string',
@@ -81,6 +94,8 @@ class ProjectController extends Controller
     // Menghapus project.
     public function destroy(Project $project)
     {
+        $this->authorizeOwner($project);
+
         $project->delete();
 
         return redirect()

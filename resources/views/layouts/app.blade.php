@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -6,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'GarudaHub')</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: Arial, sans-serif;
@@ -20,12 +17,27 @@
         nav {
             background: #173b65;
             padding: 16px 8%;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            margin-right: 20px;
+            font-weight: bold;
+        }
+
+        nav form { margin-left: auto; }
+
+        nav button {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 4px;
+            cursor: pointer;
             font-weight: bold;
         }
 
@@ -52,9 +64,7 @@
             cursor: pointer;
         }
 
-        .btn-danger {
-            background: #c0392b;
-        }
+        .btn-danger { background: #c0392b; }
 
         table {
             width: 100%;
@@ -94,8 +104,30 @@
 <body>
     <nav>
         <a href="{{ route('projects.index') }}">GarudaHub</a>
-        <a href="{{ route('projects.index') }}">Projects</a>
-        <a href="{{ route('bids.index') }}">Bids</a>
+
+        @auth
+            <a href="{{ route('projects.index') }}">Projects</a>
+
+            @if (auth()->user()->role === 'developer')
+                <a href="{{ route('bids.index') }}">Bids</a>
+            @endif
+
+            @if (auth()->user()->role === 'klien')
+                <a href="{{ route('projects.create') }}">Tambah Project</a>
+            @endif
+
+            <span style="color: white;">
+                Halo, {{ auth()->user()->nama }}
+            </span>
+
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        @else
+            <a href="{{ route('login') }}">Login</a>
+            <a href="{{ route('register') }}">Register</a>
+        @endauth
     </nav>
 
     <main>

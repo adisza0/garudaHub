@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Tambah Penawaran')
@@ -9,15 +8,18 @@
     <form action="{{ route('bids.store') }}" method="POST">
         @csrf
 
-        <label>ID Project</label>
-        <input type="number" name="project_id" value="{{ old('project_id') }}" required>
+        <label>Pilih Project</label>
+        <select name="project_id" required>
+            <option value="">-- Pilih Project --</option>
+            @foreach ($projects as $project)
+                <option value="{{ $project->id }}"
+                    {{ old('project_id') == $project->id ? 'selected' : '' }}>
+                    {{ $project->judul }}
+                    (Rp{{ number_format($project->budget_min) }} - Rp{{ number_format($project->budget_max) }})
+                </option>
+            @endforeach
+        </select>
         @error('project_id')
-            <p class="error">{{ $message }}</p>
-        @enderror
-
-        <label>ID Developer</label>
-        <input type="number" name="developer_id" value="{{ old('developer_id') }}" required>
-        @error('developer_id')
             <p class="error">{{ $message }}</p>
         @enderror
 
