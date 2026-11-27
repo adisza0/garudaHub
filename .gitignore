@@ -56,3 +56,6 @@ AGENTS.md
 /storage/framework/cache/*
 /storage/framework/sessions/*
 /storage/logs/*
+
+# Database SQLite lokal
+/database/*.sqlite
