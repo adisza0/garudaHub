@@ -50,3 +50,9 @@ AGENTS.md
 .claude/
 CLAUDE.md
 AGENTS.md
+
+# Laravel temporary files
+/storage/framework/views/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/logs/*
