@@ -1,7 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\BidController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('projects', ProjectController::class);
+Route::resource('bids', BidController::class);
