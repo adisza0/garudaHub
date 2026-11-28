@@ -7,7 +7,7 @@
 <h1>Panel Administrator</h1>
 
 @if (session('success'))
-    <p style="color: green">{{ session('success') }}</p>
+    <p class="text-success">{{ session('success') }}</p>
 @endif
 
 <h2>Daftar Pengguna</h2>

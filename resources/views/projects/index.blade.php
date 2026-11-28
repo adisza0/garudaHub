@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Daftar Projects')
@@ -48,7 +47,7 @@
                                 |
                                 <form action="{{ route('projects.destroy', $project->id) }}"
                                     method="POST"
-                                    style="display: inline;"
+                                    class="inline-form"
                                     onsubmit="return confirm('Yakin ingin menghapus project ini?')">
                                     @csrf
                                     @method('DELETE')

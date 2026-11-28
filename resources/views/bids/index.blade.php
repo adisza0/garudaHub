@@ -42,7 +42,7 @@
 
                                 <form action="{{ route('bids.destroy', $bid->id) }}"
                                     method="POST"
-                                    style="display: inline;"
+                                    class="inline-form"
                                     onsubmit="return confirm('Yakin ingin menghapus penawaran ini?')">
                                     @csrf
                                     @method('DELETE')
