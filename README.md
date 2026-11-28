@@ -1,67 +1,174 @@
-# Garuda-Hub
+# GarudaHub
 
-Website lelang proyek IT: klien memasang proyek, developer menawar, klien memilih pemenang. Dibuat untuk **studi kasus pembelajaran keamanan** mahasiswa dengan praktik PHP standar. Semua data adalah data dummy.
+GarudaHub adalah aplikasi marketplace lelang proyek IT yang memungkinkan klien membuat proyek dan developer mengajukan penawaran.
 
-## PERINGATAN
+Proyek ini merupakan tugas pembelajaran **Web-Based Programming** dengan fokus pada perancangan database relasional dan refactoring aplikasi PHP Native menjadi Laravel menggunakan pola MVC dan Eloquent ORM.
 
-- **Hanya untuk komputer lokal atau lingkungan belajar.** Jangan dipasang di server publik atau internet.
-- Konfigurasi bawaan memakai database `root` dengan password kosong. Itu hanya aman di komputer lokal.
-- Tidak ada pembatasan percobaan login (rate limit).
-- Tidak ada header keamanan `X-Frame-Options` maupun `Content-Security-Policy`.
-- Jangan memasukkan data pribadi atau password asli.
+## Teknologi
 
-## Fitur
+- PHP 8.3+
+- Laravel 13
+- MySQL
+- Blade Template
+- Eloquent ORM
+- Composer
 
-- Daftar dan login dengan peran klien, developer, admin
-- Klien memasang proyek (judul, deskripsi, kategori, budget, batas lelang)
-- Daftar, pencarian, dan detail proyek beserta penawaran
-- Developer mengajukan penawaran (harga, durasi, proposal)
-- Klien memilih pemenang
-- Dasbor per peran dan panel admin
+## Fitur yang Diimplementasikan
 
-## Kebutuhan
+- Menampilkan daftar proyek.
+- Menambahkan proyek.
+- Melihat detail proyek.
+- Mengubah data proyek.
+- Menghapus proyek.
+- Menampilkan daftar penawaran.
+- Menambahkan penawaran.
+- Melihat detail penawaran.
+- Mengubah data penawaran.
+- Menghapus penawaran.
+- Relasi antara User, Project, dan Bid menggunakan Eloquent ORM.
 
-- PHP 8.1 atau lebih baru dengan ekstensi `mysqli`
-- MySQL atau MariaDB
+## Kebutuhan Sistem
+
+Pastikan perangkat telah memiliki:
+
+- PHP 8.3 atau lebih baru.
+- Composer.
+- MySQL atau MariaDB.
+- Git.
 
 ## Instalasi
 
-1. Klon repositori ini lalu masuk ke foldernya.
-2. Impor skema dan data dummy:
-   ```
-   mysql -u root -p < src/database.sql
-   ```
-   Ini membuat database `garuda_hub` dan **menghapus** tabel `users`, `projects`, `bids` jika sudah ada.
-3. (Opsional) Atur koneksi database lewat variabel lingkungan:
+### 1. Clone Repository
 
-   | Variabel | Bawaan |
-   | --- | --- |
-   | `GH_DB_HOST` | `127.0.0.1` |
-   | `GH_DB_USER` | `root` |
-   | `GH_DB_PASS` | kosong |
-   | `GH_DB_NAME` | `garuda_hub` |
-   | `GH_DB_PORT` | `3306` |
+```bash
+git clone -b adisza0-refactor-garudahub https://github.com/adisza0/garudaHub.git
+cd garudaHub
+```
 
-   Contoh: `export GH_DB_USER=nama_pengguna_anda`
-4. Jalankan server bawaan PHP:
-   ```
-   php -S localhost:8000 -t src
-   ```
-5. Buka `http://localhost:8000`.
+### 2. Install Dependensi
 
-## Akun dummy
+```bash
+composer install
+```
 
-Data awal berisi akun fiktif berdomain `example.com`: satu admin (`admin@example.com`), klien (`budi@`, `siti@`, `agus@`), dan developer (`dewi@`, `eko@`, `fitri@`, `gilang@`). Password tidak dicantumkan di sini. Anda dapat mendaftar akun baru sebagai klien atau developer lewat halaman Daftar.
+### 3. Konfigurasi Environment
 
-## Struktur
+Salin file `.env.example` menjadi `.env`.
 
-- `src/index.php`: seluruh aplikasi (routing lewat `?page=`)
-- `src/database.sql`: skema dan data dummy
+Windows PowerShell:
 
-## Panduan pemakaian
+```powershell
+Copy-Item .env.example .env
+```
 
-Lihat folder `docs/user/` bila tersedia.
+### 4. Buat Database
+
+Buat database MySQL dengan nama:
+
+```sql
+CREATE DATABASE garuda_hub;
+```
+
+### 5. Atur Koneksi Database
+
+Sesuaikan konfigurasi berikut di file `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=garuda_hub
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Sesuaikan username dan password berdasarkan konfigurasi MySQL lokal.
+
+### 6. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### 7. Jalankan Migration dan Seeder
+
+```bash
+php artisan migrate --seed
+```
+
+Perintah ini membuat tabel database dan mengisi data contoh.
+
+### 8. Jalankan Aplikasi
+
+```bash
+php artisan serve
+```
+
+Buka aplikasi melalui:
+
+http://127.0.0.1:8000
+
+## Akun Demo
+
+Seeder menyediakan tiga akun contoh:
+
+| Peran | Email | Password |
+|---|---|---|
+| Admin | admin@garudahub.test | password |
+| Klien | klien@garudahub.test | password |
+| Developer | developer@garudahub.test | password |
+
+Akun tersebut merupakan data dummy untuk kebutuhan pengujian. Fitur autentikasi belum diimplementasikan.
+
+## Struktur Proyek
+
+```text
+garudaHub/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── ProjectController.php
+│   │   └── BidController.php
+│   └── Models/
+│       ├── User.php
+│       ├── Project.php
+│       └── Bid.php
+├── database/
+│   ├── migrations/
+│   ├── factories/
+│   └── seeders/
+├── resources/
+│   └── views/
+│       ├── layouts/
+│       ├── projects/
+│       └── bids/
+├── routes/
+│   └── web.php
+├── tests/
+├── src/
+│   ├── index.php
+│   └── database.sql
+└── README.md
+```
+
+Folder `src/` menyimpan aplikasi PHP Native versi awal sebagai arsip dan referensi refactoring.
+
+## Pengujian
+
+Jalankan pengujian Laravel menggunakan:
+
+```bash
+php artisan test
+```
+
+Pengujian fitur mencakup pemeriksaan respons halaman utama, daftar proyek, dan daftar penawaran.
+
+## Catatan
+
+- Aplikasi ini dibuat untuk kebutuhan pembelajaran dan pengembangan lokal.
+- Data yang digunakan merupakan data dummy.
+- Fitur autentikasi dan otorisasi pengguna belum diimplementasikan.
+- Jangan menggunakan konfigurasi database lokal yang tidak aman pada server publik.
 
 ## Lisensi
 
-MIT. Lihat [LICENSE](LICENSE).
+MIT. Lihat file [LICENSE](LICENSE).
